@@ -9,3 +9,4 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 # Load the Dataset:
 data = pd.read_csv('data/parkinsons.data')
 
+print(data.to_string())
