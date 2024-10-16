@@ -10,3 +10,6 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 data = pd.read_csv('data/parkinsons.data')
 
 print(data.to_string())
+
+# Create a Python file (or do it here) for exploratory data analysis (EDA).
+# Do "Interpretation" for EDA

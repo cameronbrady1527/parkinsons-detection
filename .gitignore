@@ -4,3 +4,5 @@ __pycache__/
 *.py[cod]
 
 .ipynd_checkpoints/
+
+todo.txt
