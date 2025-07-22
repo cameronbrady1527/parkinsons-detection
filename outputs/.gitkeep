@@ -1,0 +1,2 @@
+# This file ensures the outputs/ directory is tracked by git
+# The directory itself should be tracked, but its timestamped subdirectories are ignored 
