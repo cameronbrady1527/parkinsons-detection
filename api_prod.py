@@ -38,14 +38,19 @@ async def lifespan(app: FastAPI):
     print("Initializing Parkinson's Disease Detection API...")
     
     try:
+        print("Step 1: Loading training data...")
         # Load and preprocess the training data
         df = load_parkinsons_data()
         if df is None:
             raise Exception("Failed to load training data")
+        print(f"Data loaded successfully: {df.shape}")
         
+        print("Step 2: Preprocessing data...")
         # Preprocess data
         X_train, X_test, y_train, y_test, scaler = preprocess_data(df)
+        print(f"Data preprocessed: train={X_train.shape}, test={X_test.shape}")
         
+        print("Step 3: Feature selection...")
         # Feature selection
         X_train_selected, X_test_selected, selected_features = feature_selection(
             X_train=X_train,
@@ -54,7 +59,9 @@ async def lifespan(app: FastAPI):
             method='random_forest',
             n_features=15
         )
+        print(f"Features selected: {len(selected_features)}")
         
+        print("Step 4: Training models...")
         # Train models
         trained_models = train_models(
             X_train=X_train_selected,
@@ -67,7 +74,10 @@ async def lifespan(app: FastAPI):
         
     except Exception as e:
         print(f"Error during startup: {str(e)}")
-        raise e
+        import traceback
+        traceback.print_exc()
+        # Don't raise the exception - let the app start with limited functionality
+        print("Starting API with limited functionality...")
     
     yield
     
@@ -107,14 +117,28 @@ async def root():
         }
     }
 
+@app.get("/ping")
+async def ping():
+    """Simple ping endpoint for basic health checks"""
+    return {"status": "ok", "message": "pong"}
+
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
-    return {
-        "status": "healthy",
-        "models_loaded": trained_models is not None,
-        "timestamp": datetime.now().isoformat()
-    }
+    try:
+        return {
+            "status": "healthy",
+            "models_loaded": trained_models is not None,
+            "scaler_loaded": scaler is not None,
+            "features_loaded": selected_features is not None,
+            "timestamp": datetime.now().isoformat()
+        }
+    except Exception as e:
+        return {
+            "status": "degraded",
+            "error": str(e),
+            "timestamp": datetime.now().isoformat()
+        }
 
 @app.get("/info")
 async def get_info():
