@@ -7,8 +7,9 @@ Optimized for production deployment without visualization dependencies.
 """
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
 import pandas as pd
 import numpy as np
@@ -101,6 +102,12 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# Mount static files
+try:
+    app.mount("/static", StaticFiles(directory="static"), name="static")
+except Exception as e:
+    print(f"Warning: Could not mount static files: {e}")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -110,21 +117,40 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    """Root endpoint with API information"""
-    return {
-        "message": "Parkinson's Disease Detection API",
-        "version": "1.0.0",
-        "status": "running",
-        "endpoints": {
-            "health": "/health",
-            "info": "/info",
-            "predict": "/predict",
-            "analyze": "/analyze",
-            "train": "/train"
-        }
-    }
+    """Serve the main frontend page"""
+    try:
+        with open("static/index.html", "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    except FileNotFoundError:
+        # Fallback to API info if frontend files are not available
+        return HTMLResponse(content=f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Parkinson's Disease Detection API</title>
+            <style>
+                body {{ font-family: Arial, sans-serif; margin: 40px; }}
+                .container {{ max-width: 800px; margin: 0 auto; }}
+                .endpoint {{ background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Parkinson's Disease Detection API</h1>
+                <p>Version: 1.0.0</p>
+                <p>Status: Running</p>
+                <h2>Available Endpoints:</h2>
+                <div class="endpoint"><strong>GET /health</strong> - Health check</div>
+                <div class="endpoint"><strong>GET /info</strong> - Model information</div>
+                <div class="endpoint"><strong>POST /predict</strong> - Make predictions</div>
+                <div class="endpoint"><strong>POST /analyze</strong> - Analyze data</div>
+                <div class="endpoint"><strong>POST /train</strong> - Retrain models</div>
+            </div>
+        </body>
+        </html>
+        """)
 
 @app.get("/ping")
 async def ping():
