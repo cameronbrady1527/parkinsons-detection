@@ -27,15 +27,12 @@ RUN mkdir -p outputs
 COPY start.sh .
 RUN chmod +x start.sh
 
-# Make health check script executable
-RUN chmod +x health_check.py
-
 # Expose port
 EXPOSE 8000
 
-# Health check
+# Health check using curl
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD python health_check.py
+    CMD curl -f http://localhost:8000/health || exit 1
 
 # Run the production application
 CMD ["./start.sh"] 
