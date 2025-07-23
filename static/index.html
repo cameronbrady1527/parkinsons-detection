@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parkinson's Disease Detection - AI-Powered Analysis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="floating-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fas fa-brain"></i>
+                        <div class="pulse-ring"></div>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Parkinson's Detection</h1>
+                        <span class="subtitle">AI-Powered Voice Analysis</span>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="status-indicator" id="statusIndicator">
+                        <div class="status-dot"></div>
+                        <span class="status-text">Initializing...</span>
+                    </div>
+                    <button class="demo-btn" id="demoBtn" onclick="runDemo()">
+                        <i class="fas fa-play"></i>
+                        Try Demo
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Hero Section -->
+            <section class="hero-section">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h2>Advanced Parkinson's Disease Detection</h2>
+                        <p class="hero-description">
+                            Leverage cutting-edge machine learning to analyze voice measurements and detect early signs of Parkinson's disease with remarkable accuracy.
+                        </p>
+                        <div class="hero-actions">
+                            <button class="cta-btn primary" onclick="scrollToUpload()">
+                                <i class="fas fa-upload"></i>
+                                Start Analysis
+                            </button>
+                            <button class="cta-btn secondary" onclick="downloadSample()">
+                                <i class="fas fa-download"></i>
+                                Download Sample
+                            </button>
+                        </div>
+                        <div class="hero-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">94.9%</div>
+                                <div class="stat-label">Accuracy</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">3</div>
+                                <div class="stat-label">ML Models</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">15</div>
+                                <div class="stat-label">Features</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <div class="brain-animation">
+                            <i class="fas fa-brain"></i>
+                            <div class="neural-connections">
+                                <div class="connection"></div>
+                                <div class="connection"></div>
+                                <div class="connection"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-container">
+                    <div class="upload-header">
+                        <h3><i class="fas fa-upload"></i> Upload Voice Data</h3>
+                        <p>Upload your CSV file containing voice measurement data for analysis</p>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-content">
+                            <div class="upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <div class="upload-pulse"></div>
+                            </div>
+                            <h4>Drop your CSV file here</h4>
+                            <p>or click to browse files</p>
+                            <div class="file-requirements">
+                                <span class="requirement">
+                                    <i class="fas fa-check"></i>
+                                    CSV format required
+                                </span>
+                                <span class="requirement">
+                                    <i class="fas fa-check"></i>
+                                    Voice measurement data
+                                </span>
+                                <span class="requirement">
+                                    <i class="fas fa-check"></i>
+                                    Secure processing
+                                </span>
+                            </div>
+                        </div>
+                        <input type="file" id="fileInput" accept=".csv" style="display: none;" onchange="handleFileSelect(event)">
+                    </div>
+                    
+                    <div class="upload-actions">
+                        <button class="upload-btn primary" id="uploadBtn" onclick="handleUpload()" disabled>
+                            <i class="fas fa-play"></i>
+                            <span>Analyze Data</span>
+                            <div class="btn-loading" style="display: none;">
+                                <div class="spinner-small"></div>
+                            </div>
+                        </button>
+                        <button class="upload-btn secondary" onclick="downloadSample()">
+                            <i class="fas fa-download"></i>
+                            <span>Download Sample</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-container">
+                    <div class="results-header">
+                        <h3><i class="fas fa-chart-line"></i> Analysis Results</h3>
+                        <div class="results-summary" id="resultsSummary">
+                            <!-- Summary will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="results-grid" id="resultsGrid">
+                        <!-- Results will be populated here -->
+                    </div>
+                    
+                    <div class="results-actions">
+                        <button class="action-btn" onclick="exportResults()">
+                            <i class="fas fa-download"></i>
+                            Export Results
+                        </button>
+                        <button class="action-btn" onclick="newAnalysis()">
+                            <i class="fas fa-plus"></i>
+                            New Analysis
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Model Information -->
+            <section class="models-section">
+                <div class="models-container">
+                    <div class="models-header">
+                        <h3><i class="fas fa-robot"></i> Model Performance</h3>
+                        <p>Our ensemble of machine learning models provides robust and accurate predictions</p>
+                    </div>
+                    
+                    <div class="models-grid" id="modelsGrid">
+                        <div class="loading-models">
+                            <div class="spinner"></div>
+                            <p>Loading model information...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <div class="features-container">
+                    <h3>Why Choose Our Platform?</h3>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h4>Secure & Private</h4>
+                            <p>Your data is processed securely and never stored permanently</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h4>Lightning Fast</h4>
+                            <p>Get results in seconds with our optimized ML pipeline</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <h4>Detailed Analysis</h4>
+                            <p>Comprehensive results with confidence scores and explanations</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h4>Mobile Friendly</h4>
+                            <p>Works perfectly on desktop, tablet, and mobile devices</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Parkinson's Disease Detection</h4>
+                    <p>Advanced AI-powered voice analysis for early detection</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Technology</h4>
+                    <p>Machine Learning • FastAPI • Modern Web Technologies</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>For research and healthcare applications</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Parkinson's Disease Detection. Powered by Advanced Machine Learning.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal" id="loadingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Processing Your Data</h3>
+            </div>
+            <div class="modal-body">
+                <div class="processing-animation">
+                    <div class="brain-processing">
+                        <i class="fas fa-brain"></i>
+                        <div class="processing-rings">
+                            <div class="ring ring-1"></div>
+                            <div class="ring ring-2"></div>
+                            <div class="ring ring-3"></div>
+                        </div>
+                    </div>
+                    <p>Analyzing voice measurements with our AI models...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-check-circle"></i> Analysis Complete!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Your data has been successfully analyzed. View the results below.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeSuccessModal()">View Results</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="modal error-modal" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-exclamation-triangle"></i> Analysis Error</h3>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">An error occurred during analysis. Please try again.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeErrorModal()">Try Again</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html> 
