@@ -42,7 +42,13 @@ async def lifespan(app: FastAPI):
         # Load and preprocess the training data
         df = load_parkinsons_data()
         if df is None:
-            raise Exception("Failed to load training data")
+            print("WARNING: Failed to load training data, starting with limited functionality")
+            trained_models = None
+            scaler = None
+            selected_features = None
+            yield
+            return
+        
         print(f"Data loaded successfully: {df.shape}")
         
         print("Step 2: Preprocessing data...")
@@ -123,7 +129,17 @@ async def root():
 @app.get("/ping")
 async def ping():
     """Simple ping endpoint for basic health checks"""
-    return {"status": "ok", "message": "pong"}
+    return {"status": "ok", "message": "pong", "timestamp": datetime.now().isoformat()}
+
+@app.get("/test")
+async def test():
+    """Test endpoint that doesn't require model loading"""
+    return {
+        "status": "ok", 
+        "message": "API is running",
+        "models_loaded": trained_models is not None,
+        "timestamp": datetime.now().isoformat()
+    }
 
 @app.get("/health")
 async def health_check():

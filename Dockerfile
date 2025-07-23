@@ -8,6 +8,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy production requirements first for better caching
@@ -26,12 +27,15 @@ RUN mkdir -p outputs
 COPY start.sh .
 RUN chmod +x start.sh
 
+# Make health check script executable
+RUN chmod +x health_check.py
+
 # Expose port
 EXPOSE 8000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=120s --retries=5 \
-    CMD curl -f http://localhost:${PORT:-8000}/ping || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python health_check.py
 
 # Run the production application
 CMD ["./start.sh"] 
