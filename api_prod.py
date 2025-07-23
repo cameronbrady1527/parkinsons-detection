@@ -76,8 +76,11 @@ async def lifespan(app: FastAPI):
         print(f"Error during startup: {str(e)}")
         import traceback
         traceback.print_exc()
-        # Don't raise the exception - let the app start with limited functionality
-        print("Starting API with limited functionality...")
+        # Initialize with None values but don't crash
+        trained_models = None
+        scaler = None
+        selected_features = None
+        print("Starting API with limited functionality - models will be loaded on first request...")
     
     yield
     
@@ -126,16 +129,28 @@ async def ping():
 async def health_check():
     """Health check endpoint"""
     try:
+        models_status = trained_models is not None
+        scaler_status = scaler is not None
+        features_status = selected_features is not None
+        
+        # Determine overall status
+        if models_status and scaler_status and features_status:
+            status = "healthy"
+        elif models_status or scaler_status or features_status:
+            status = "degraded"
+        else:
+            status = "starting"
+        
         return {
-            "status": "healthy",
-            "models_loaded": trained_models is not None,
-            "scaler_loaded": scaler is not None,
-            "features_loaded": selected_features is not None,
+            "status": status,
+            "models_loaded": models_status,
+            "scaler_loaded": scaler_status,
+            "features_loaded": features_status,
             "timestamp": datetime.now().isoformat()
         }
     except Exception as e:
         return {
-            "status": "degraded",
+            "status": "error",
             "error": str(e),
             "timestamp": datetime.now().isoformat()
         }
@@ -144,7 +159,11 @@ async def health_check():
 async def get_info():
     """Get information about the trained models"""
     if trained_models is None:
-        raise HTTPException(status_code=503, detail="Models not loaded")
+        return {
+            "status": "models_not_loaded",
+            "message": "Models are being loaded. Try again in a moment.",
+            "timestamp": datetime.now().isoformat()
+        }
     
     model_info = {}
     for name, model_data in trained_models.items():
@@ -155,9 +174,11 @@ async def get_info():
         }
     
     return {
+        "status": "ready",
         "models": model_info,
         "selected_features": selected_features,
-        "total_features": len(selected_features) if selected_features else 0
+        "total_features": len(selected_features) if selected_features else 0,
+        "timestamp": datetime.now().isoformat()
     }
 
 @app.post("/predict")
@@ -167,8 +188,32 @@ async def predict(file: UploadFile = File(...)):
     
     Expected CSV format with the same columns as the training data
     """
+    global trained_models, scaler, selected_features
+    
+    # Lazy load models if not already loaded
     if trained_models is None or scaler is None:
-        raise HTTPException(status_code=503, detail="Models not loaded")
+        try:
+            print("Loading models on first request...")
+            df = load_parkinsons_data()
+            if df is None:
+                raise HTTPException(status_code=503, detail="Failed to load training data")
+            
+            X_train, X_test, y_train, y_test, scaler = preprocess_data(df)
+            X_train_selected, X_test_selected, selected_features = feature_selection(
+                X_train=X_train,
+                y_train=y_train,
+                X_test=X_test,
+                method='random_forest',
+                n_features=15
+            )
+            trained_models = train_models(
+                X_train=X_train_selected,
+                y_train=y_train,
+                models=['logistic', 'random_forest', 'svm']
+            )
+            print("Models loaded successfully!")
+        except Exception as e:
+            raise HTTPException(status_code=503, detail=f"Failed to load models: {str(e)}")
     
     try:
         # Read uploaded file

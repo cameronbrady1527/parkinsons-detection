@@ -22,12 +22,16 @@ COPY . .
 # Create outputs directory
 RUN mkdir -p outputs
 
+# Make startup script executable
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Expose port
 EXPOSE 8000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=120s --retries=5 \
-    CMD curl -f http://localhost:8000/ping || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/ping || exit 1
 
 # Run the production application
-CMD ["uvicorn", "api_prod:app", "--host", "0.0.0.0", "--port", "8000"] 
+CMD ["./start.sh"] 
