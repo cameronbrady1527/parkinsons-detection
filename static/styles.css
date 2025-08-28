@@ -1316,6 +1316,7 @@ body {
     font-weight: 600;
     color: var(--gray-900);
     margin-bottom: var(--spacing-sm);
+
     display: flex;
     align-items: center;
     justify-content: center;
