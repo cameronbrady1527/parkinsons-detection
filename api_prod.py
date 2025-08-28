@@ -102,11 +102,25 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Mount static files
+# Mount static files with better error handling
+import os
+static_dir = "static"
+if not os.path.exists(static_dir):
+    print(f"Warning: Static directory '{static_dir}' not found. Current working directory: {os.getcwd()}")
+    print(f"Available files: {os.listdir('.')}")
+    # Try to create static directory if it doesn't exist
+    try:
+        os.makedirs(static_dir, exist_ok=True)
+        print(f"Created static directory: {static_dir}")
+    except Exception as e:
+        print(f"Could not create static directory: {e}")
+
 try:
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
+    print(f"Successfully mounted static files from: {os.path.abspath(static_dir)}")
 except Exception as e:
-    print(f"Warning: Could not mount static files: {e}")
+    print(f"Error mounting static files: {e}")
+    print(f"Static directory contents: {os.listdir(static_dir) if os.path.exists(static_dir) else 'Directory does not exist'}")
 
 # Add CORS middleware
 app.add_middleware(
@@ -120,10 +134,17 @@ app.add_middleware(
 @app.get("/", response_class=HTMLResponse)
 async def root():
     """Serve the main frontend page"""
+    import os
     try:
         with open("static/index.html", "r", encoding="utf-8") as f:
             return HTMLResponse(content=f.read())
-    except FileNotFoundError:
+    except FileNotFoundError as e:
+        print(f"Frontend file not found: {e}")
+        print(f"Current directory: {os.getcwd()}")
+        print(f"Available files: {os.listdir('.')}")
+        if os.path.exists("static"):
+            print(f"Static directory contents: {os.listdir('static')}")
+        
         # Fallback to API info if frontend files are not available
         return HTMLResponse(content=f"""
         <!DOCTYPE html>
@@ -141,7 +162,9 @@ async def root():
                 <h1>Parkinson's Disease Detection API</h1>
                 <p>Version: 1.0.0</p>
                 <p>Status: Running</p>
+                <p><strong>Debug Info:</strong> Static files not found. Check /test endpoint for details.</p>
                 <h2>Available Endpoints:</h2>
+                <div class="endpoint"><strong>GET /test</strong> - Debug information</div>
                 <div class="endpoint"><strong>GET /health</strong> - Health check</div>
                 <div class="endpoint"><strong>GET /info</strong> - Model information</div>
                 <div class="endpoint"><strong>POST /predict</strong> - Make predictions</div>
@@ -160,11 +183,16 @@ async def ping():
 @app.get("/test")
 async def test():
     """Test endpoint that doesn't require model loading"""
+    import os
     return {
         "status": "ok", 
         "message": "API is running",
         "models_loaded": trained_models is not None,
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
+        "working_directory": os.getcwd(),
+        "static_dir_exists": os.path.exists("static"),
+        "static_dir_contents": os.listdir("static") if os.path.exists("static") else [],
+        "all_files": os.listdir(".")
     }
 
 @app.get("/health")
