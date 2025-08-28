@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Parkinson's Disease - Comprehensive Information</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        .info-page {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+        
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .info-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+        
+        .top-navigation {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .info-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .info-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .content-grid {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .content-card h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .content-card h3 {
+            color: #34495e;
+            font-size: 1.3rem;
+            margin: 1.5rem 0 0.5rem 0;
+        }
+        
+        .content-card p, .content-card li {
+            line-height: 1.7;
+            color: #555;
+            font-size: 1rem;
+        }
+        
+        .statistics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .source-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+        
+        .source-box small {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .severity-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .stage-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid #667eea;
+        }
+        
+        .stage-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .impact-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .impact-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .detection-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .timeline-icon {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .timeline-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2c3e50;
+        }
+        
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .research-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border-top: 4px solid #27ae60;
+        }
+        
+        .research-card h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .challenge-item {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .challenge-item h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .table-of-contents {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-of-contents h2 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        
+        .toc-item {
+            background: #f8f9fa;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .toc-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .toc-item a {
+            text-decoration: none;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .toc-item a:hover {
+            color: #667eea;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <div class="info-page">
+        <div class="info-container">
+            <!-- Top Navigation -->
+            <div class="top-navigation">
+                <a href="/static/index.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Detection Tool
+                </a>
+                <a href="https://www.parkinson.org" target="_blank" class="nav-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Parkinson's Foundation
+                </a>
+                <a href="https://www.ninds.nih.gov/health-information/disorders/parkinsons-disease" target="_blank" class="nav-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    NINDS Information
+                </a>
+            </div>
+            
+            <!-- Header -->
+            <div class="info-header">
+                <h1><i class="fas fa-brain"></i> Understanding Parkinson's Disease</h1>
+                <p>Comprehensive information about one of the most common neurodegenerative disorders affecting millions worldwide</p>
+            </div>
+
+            <!-- Table of Contents -->
+            <div class="table-of-contents">
+                <h2><i class="fas fa-list"></i> Table of Contents</h2>
+                <div class="toc-grid">
+                    <div class="toc-item">
+                        <a href="#overview"><i class="fas fa-info-circle"></i> What is Parkinson's Disease?</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#statistics"><i class="fas fa-globe"></i> Global Population Statistics</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#causes"><i class="fas fa-search"></i> Causes and Risk Factors</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#symptoms"><i class="fas fa-stethoscope"></i> Symptoms and Disease Progression</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#impact"><i class="fas fa-heart"></i> Impact on Individuals and Families</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#detection"><i class="fas fa-microscope"></i> Current State of Detection</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#research"><i class="fas fa-flask"></i> Breakthrough Research in Early Detection</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#improvements"><i class="fas fa-target"></i> Areas for Improvement</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#strengths"><i class="fas fa-check-circle"></i> Current Strengths in PD Management</a>
+                    </div>
+                    <div class="toc-item">
+                        <a href="#future"><i class="fas fa-lightbulb"></i> Hope for the Future</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+                <!-- Overview Section -->
+                <div class="content-card" id="overview">
+                    <h2><i class="fas fa-info-circle"></i> What is Parkinson's Disease?</h2>
+                    <p>
+                        Parkinson's disease (PD) is a progressive neurodegenerative disorder that primarily affects the dopamine-producing neurons in a specific area of the brain called the substantia nigra. As these neurons die or become impaired, they produce less dopamine, causing the movement problems associated with the disease.
+                    </p>
+                    <p>
+                        The disease is named after James Parkinson, a British physician who first described the condition in 1817 in his essay "An Essay on the Shaking Palsy." Parkinson's disease belongs to a group of conditions called movement disorders, characterized by abnormal movements that can be either excessive (hyperkinetic) or reduced (hypokinetic).
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: National Institute of Neurological Disorders and Stroke (NINDS), Mayo Clinic, 2024</small>
+                    </div>
+                </div>
+
+                <!-- Global Statistics -->
+                <div class="content-card" id="statistics">
+                    <h2><i class="fas fa-globe"></i> Global Population Statistics</h2>
+                    
+                    <div class="statistics-grid">
+                        <div class="stat-box">
+                            <div class="stat-number">8.5M+</div>
+                            <div class="stat-label">People worldwide (2019)</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">90,000</div>
+                            <div class="stat-label">New U.S. diagnoses annually</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">1.2M</div>
+                            <div class="stat-label">Projected U.S. cases by 2030</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-number">329,000</div>
+                            <div class="stat-label">Global deaths in 2019</div>
+                        </div>
+                    </div>
+                    
+                    <h3>Prevalence Trends</h3>
+                    <p>
+                        The global prevalence of Parkinson's disease has more than doubled in the past 25 years. This dramatic increase is primarily attributed to the aging global population, as age is the primary risk factor for PD. The incidence is consistently higher in men compared to women across all age groups.
+                    </p>
+                    
+                    <h3>Economic Impact</h3>
+                    <p>
+                        The economic burden of Parkinson's disease is substantial, with estimated costs of approximately $61.5 billion annually in the United States alone as of 2025. This includes direct medical costs, with medications alone averaging $2,500 per year per patient, plus indirect costs from lost productivity and caregiver burden.
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: Parkinson's Foundation Statistics 2024, WHO Fact Sheets 2024, Global Burden of Disease Study 2021</small>
+                    </div>
+                </div>
+
+                <!-- Causes and Risk Factors -->
+                <div class="content-card" id="causes">
+                    <h2><i class="fas fa-search"></i> Causes and Risk Factors</h2>
+                    
+                    <h3>Primary Cause</h3>
+                    <p>
+                        The most prominent signs and symptoms occur when nerve cells in the basal ganglia, an area of the brain that controls movement, become impaired or die. These neurons normally produce dopamine, a crucial neurotransmitter for smooth, coordinated movement.
+                    </p>
+                    
+                    <h3>Risk Factors</h3>
+                    <ul>
+                        <li><strong>Age:</strong> The primary risk factor, with most people developing PD after age 60</li>
+                        <li><strong>Gender:</strong> Men are 1.5 times more likely to develop PD than women</li>
+                        <li><strong>Genetics:</strong> About 10% of cases have a genetic cause, typically in younger patients</li>
+                        <li><strong>Environmental factors:</strong> Exposure to certain toxins and pesticides may increase risk</li>
+                        <li><strong>Geographic location:</strong> Higher rates in industrialized regions ("Rust Belt" phenomenon)</li>
+                    </ul>
+                    
+                    <h3>Genetic vs. Environmental</h3>
+                    <p>
+                        Most researchers now believe that Parkinson's results from a complex interaction between genetic susceptibility and environmental factors. While only 10% of cases are directly caused by genetic mutations, environmental exposures in genetically predisposed individuals may trigger the disease process.
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: National Institute on Aging, Mayo Clinic, StatPearls Medical Education 2024</small>
+                    </div>
+                </div>
+
+                <!-- Symptoms and Stages -->
+                <div class="content-card" id="symptoms">
+                    <h2><i class="fas fa-stethoscope"></i> Symptoms and Disease Progression</h2>
+                    
+                    <h3>Motor Symptoms (Primary)</h3>
+                    <ul>
+                        <li><strong>Bradykinesia:</strong> Slowness of movement</li>
+                        <li><strong>Resting tremor:</strong> Trembling that occurs at rest</li>
+                        <li><strong>Rigidity:</strong> Muscle stiffness</li>
+                        <li><strong>Postural instability:</strong> Balance problems (later stage)</li>
+                    </ul>
+                    
+                    <h3>Non-Motor Symptoms</h3>
+                    <ul>
+                        <li>Loss of smell (often occurs years before motor symptoms)</li>
+                        <li>Sleep disorders, including REM behavior disorder</li>
+                        <li>Mood changes and depression</li>
+                        <li>Constipation</li>
+                        <li>Voice and speech changes</li>
+                        <li>Cognitive changes</li>
+                    </ul>
+                    
+                    <h3>Disease Stages</h3>
+                    <div class="severity-stages">
+                        <div class="stage-card">
+                            <div class="stage-title">Prodromal Phase</div>
+                            <p>Non-motor symptoms may appear 10-20 years before motor symptoms. Loss of smell and sleep disorders are common early indicators.</p>
+                        </div>
+                        <div class="stage-card">
+                            <div class="stage-title">Early Stage (1-2 years)</div>
+                            <p>Mild motor symptoms, usually on one side of the body. Tremor, slight changes in posture and walking.</p>
+                        </div>
+                        <div class="stage-card">
+                            <div class="stage-title">Moderate Stage (3-7 years)</div>
+                            <p>Symptoms affect both sides of the body. Daily activities become more challenging, but independence is maintained.</p>
+                        </div>
+                        <div class="stage-card">
+                            <div class="stage-title">Advanced Stage (8+ years)</div>
+                            <p>Severe mobility limitations, potential cognitive changes, and increased care needs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="source-box">
+                        <small>Sources: National Institute of Neurological Disorders and Stroke, Parkinson's Foundation Clinical Guidelines 2024</small>
+                    </div>
+                </div>
+
+                <!-- Impact on Quality of Life -->
+                <div class="content-card" id="impact">
+                    <h2><i class="fas fa-heart"></i> Impact on Individuals and Families</h2>
+                    
+                    <p>
+                        Parkinson's disease profoundly affects not only patients but also their families and caregivers. Understanding these impacts is crucial for comprehensive care and support.
+                    </p>
+                    
+                    <div class="impact-list">
+                        <div class="impact-item">
+                            <h4>Physical Impact</h4>
+                            <p>Progressive motor limitations affecting daily activities, mobility, and independence</p>
+                        </div>
+                        <div class="impact-item">
+                            <h4>Emotional Impact</h4>
+                            <p>Depression, anxiety, and adjustment challenges following diagnosis</p>
+                        </div>
+                        <div class="impact-item">
+                            <h4>Social Impact</h4>
+                            <p>Changes in social interactions, employment, and community participation</p>
+                        </div>
+                        <div class="impact-item">
+                            <h4>Caregiver Burden</h4>
+                            <p>Increasing care responsibilities for family members and loved ones</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Supporting Individuals and Families</h3>
+                    <p>
+                        While Parkinson's disease presents significant challenges, many people with PD continue to live fulfilling lives with proper medical care, support systems, and adaptive strategies. Early diagnosis and comprehensive treatment can help maintain quality of life and independence for many years.
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: Parkinson's Foundation Patient Resources, Mayo Clinic Patient Care Guidelines 2024</small>
+                    </div>
+                </div>
+
+                <!-- Current Detection Status -->
+                <div class="content-card" id="detection">
+                    <h2><i class="fas fa-microscope"></i> Current State of Detection and Diagnosis</h2>
+                    
+                    <h3>Traditional Diagnosis Challenges</h3>
+                    <p>
+                        Currently, Parkinson's disease diagnosis relies primarily on clinical observation of motor symptoms. However, by the time these symptoms appear, approximately 50-80% of dopaminergic neurons have already been lost. This represents a critical challenge in the field.
+                    </p>
+                    
+                    <div class="detection-timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-clock"></i></div>
+                            <div class="timeline-content">
+                                <h4>10-20 Years Before Diagnosis</h4>
+                                <p>Prodromal symptoms begin: loss of smell, sleep disorders, mood changes</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="timeline-content">
+                                <h4>50-80% Neuron Loss</h4>
+                                <p>Significant brain changes occur before motor symptoms become apparent</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon"><i class="fas fa-user-md"></i></div>
+                            <div class="timeline-content">
+                                <h4>Clinical Diagnosis</h4>
+                                <p>Motor symptoms become evident, leading to medical consultation and diagnosis</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Current Diagnostic Tools</h3>
+                    <ul>
+                        <li><strong>Clinical Assessment:</strong> Primary method based on motor symptom observation</li>
+                        <li><strong>DaTscan:</strong> FDA-approved imaging to visualize dopamine system function</li>
+                        <li><strong>Response to medication:</strong> Positive response to dopaminergic therapy supports diagnosis</li>
+                    </ul>
+                    
+                    <div class="source-box">
+                        <small>Sources: National Institute of Neurological Disorders and Stroke, Clinical Diagnosis Guidelines 2024</small>
+                    </div>
+                </div>
+
+                <!-- Breakthrough Research -->
+                <div class="content-card" id="research">
+                    <h2><i class="fas fa-flask"></i> Breakthrough Research in Early Detection</h2>
+                    
+                    <h3>Alpha-Synuclein Biomarkers</h3>
+                    <p>
+                        Revolutionary advances in 2024 have focused on alpha-synuclein protein detection, which may enable diagnosis years before motor symptoms appear. The alpha-synuclein seed amplification assay (SAA) shows remarkable promise for early detection.
+                    </p>
+                    
+                    <div class="research-grid">
+                        <div class="research-card">
+                            <h4>Cerebrospinal Fluid Testing</h4>
+                            <p>Alpha-synuclein SAA demonstrates 87% accuracy in detecting early PD and 96% specificity in healthy individuals</p>
+                        </div>
+                        <div class="research-card">
+                            <h4>Peripheral Tissue Analysis</h4>
+                            <p>Skin biopsy testing for phosphorylated alpha-synuclein shows 55-100% sensitivity and >90% specificity</p>
+                        </div>
+                        <div class="research-card">
+                            <h4>Advanced Brain Imaging</h4>
+                            <p>3T and 7T MRI techniques can detect increased iron in substantia nigra, identifying early PD patients</p>
+                        </div>
+                        <div class="research-card">
+                            <h4>Multi-Modal Approaches</h4>
+                            <p>Combining blood, urine, and voice analysis biomarkers for comprehensive early detection systems</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Prodromal Detection</h3>
+                    <p>
+                        Research indicates that the neurodegenerative process may begin 7-10 years before classic motor symptoms appear. Early indicators such as REM sleep behavior disorder, loss of smell, and subtle voice changes are being studied as potential screening tools.
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: Nature Communications 2024, npj Parkinson's Disease 2024, Parkinson's Foundation Research Updates</small>
+                    </div>
+                </div>
+
+                <!-- Areas for Improvement -->
+                <div class="content-card" id="improvements">
+                    <h2><i class="fas fa-target"></i> Areas for Improvement and Future Directions</h2>
+                    
+                    <div class="challenge-grid">
+                        <div class="challenge-item">
+                            <h4>Early Detection Gap</h4>
+                            <p>Need for accessible, non-invasive screening methods that can detect PD before significant neuron loss</p>
+                        </div>
+                        <div class="challenge-item">
+                            <h4>Biomarker Accessibility</h4>
+                            <p>Current promising biomarkers require specialized equipment and procedures</p>
+                        </div>
+                        <div class="challenge-item">
+                            <h4>Disease Heterogeneity</h4>
+                            <p>PD presents differently across patients, requiring personalized diagnostic approaches</p>
+                        </div>
+                        <div class="challenge-item">
+                            <h4>Global Healthcare Access</h4>
+                            <p>Need for cost-effective diagnostic tools suitable for diverse healthcare systems</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Emerging Solutions</h3>
+                    <ul>
+                        <li><strong>Voice Analysis Technology:</strong> AI-powered systems analyzing speech patterns for early detection</li>
+                        <li><strong>Wearable Devices:</strong> Continuous monitoring of movement patterns and physiological signals</li>
+                        <li><strong>Digital Biomarkers:</strong> Smartphone-based assessments of motor and cognitive function</li>
+                        <li><strong>Population Screening:</strong> Development of scalable screening programs for at-risk populations</li>
+                    </ul>
+                    
+                    <div class="source-box">
+                        <small>Sources: NINDS Research Priorities 2024, Lancet Neurology Future Directions</small>
+                    </div>
+                </div>
+
+                <!-- Current Strengths -->
+                <div class="content-card" id="strengths">
+                    <h2><i class="fas fa-check-circle"></i> Current Strengths in PD Management</h2>
+                    
+                    <h3>Treatment Advances</h3>
+                    <p>
+                        While there is no cure for Parkinson's disease, significant advances in treatment have improved quality of life for many patients.
+                    </p>
+                    
+                    <ul>
+                        <li><strong>Medication Management:</strong> Dopaminergic therapies effectively manage motor symptoms</li>
+                        <li><strong>Surgical Interventions:</strong> Deep brain stimulation (DBS) for advanced cases</li>
+                        <li><strong>Physical Therapy:</strong> Evidence-based exercise programs to maintain mobility</li>
+                        <li><strong>Multidisciplinary Care:</strong> Comprehensive care teams addressing all aspects of the disease</li>
+                    </ul>
+                    
+                    <h3>Research Infrastructure</h3>
+                    <p>
+                        Strong research networks, including the NIH Udall Centers of Excellence, provide collaborative frameworks for advancing PD research and developing new therapeutic approaches.
+                    </p>
+                    
+                    <h3>Patient Support Systems</h3>
+                    <p>
+                        Organizations like the Parkinson's Foundation provide extensive resources, support groups, and educational materials for patients and families navigating the disease.
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: NIH Udall Centers, Parkinson's Foundation Resources, Movement Disorder Society Guidelines 2024</small>
+                    </div>
+                </div>
+
+                <!-- Hope and Future -->
+                <div class="content-card" id="future">
+                    <h2><i class="fas fa-lightbulb"></i> Hope for the Future</h2>
+                    
+                    <p>
+                        While Parkinson's disease presents significant challenges, the field is experiencing unprecedented progress in understanding, detection, and treatment. The convergence of advanced biomarker research, artificial intelligence, and personalized medicine approaches offers genuine hope for transforming PD care.
+                    </p>
+                    
+                    <h3>Research Priorities for 2025 and Beyond</h3>
+                    <ul>
+                        <li>Development of disease-modifying therapies to slow or stop progression</li>
+                        <li>Implementation of widespread early detection programs</li>
+                        <li>Personalized treatment approaches based on individual disease characteristics</li>
+                        <li>Integration of technology for continuous monitoring and care optimization</li>
+                    </ul>
+                    
+                    <h3>The Role of Early Detection</h3>
+                    <p>
+                        Early detection systems represent a critical frontier in PD care. By identifying the disease before significant neuron loss occurs, there is potential for interventions that could preserve brain function and dramatically alter the disease course. Advanced AI systems analyzing voice patterns, movement data, and other biomarkers may soon enable routine screening and early intervention.
+                    </p>
+                    
+                    <div class="source-box">
+                        <small>Sources: NINDS Strategic Plan 2024, International Parkinson's Research Priorities</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="navigation-buttons">
+                <a href="/static/index.html" class="nav-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Detection Tool
+                </a>
+                <a href="https://www.parkinson.org" target="_blank" class="nav-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    Parkinson's Foundation
+                </a>
+                <a href="https://www.ninds.nih.gov/health-information/disorders/parkinsons-disease" target="_blank" class="nav-btn">
+                    <i class="fas fa-external-link-alt"></i>
+                    NINDS Information
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

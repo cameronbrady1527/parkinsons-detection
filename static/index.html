@@ -6,6 +6,7 @@
     <title>Parkinson's Disease Detection - AI-Powered Analysis</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
@@ -35,14 +36,126 @@
                 </div>
                 
                 <div class="header-actions">
+                    <div class="info-link">
+                        <a href="/static/parkinsons-info.html" style="color: #2c3e50; background: rgba(255, 255, 255, 0.9); text-decoration: none; margin-right: 1rem; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 500; transition: all 0.3s ease; backdrop-filter: blur(5px);" onmouseover="this.style.background='rgba(255, 255, 255, 1)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.9)'; this.style.transform='translateY(0)'">
+                            <i class="fas fa-info-circle"></i>
+                            About Parkinson's
+                        </a>
+                    </div>
                     <div class="status-indicator" id="statusIndicator">
                         <div class="status-dot"></div>
                         <span class="status-text">Initializing...</span>
                     </div>
-                    <button class="demo-btn" id="demoBtn" onclick="runDemo()">
-                        <i class="fas fa-play"></i>
-                        Try Demo
-                    </button>
+                    <div class="demo-dropdown">
+                        <button class="demo-btn" id="demoBtn" onclick="toggleDemoDropdown()">
+                            <i class="fas fa-play"></i>
+                            Try Demo
+                            <i class="fas fa-chevron-down demo-arrow"></i>
+                        </button>
+                        <div class="demo-dropdown-content" id="demoDropdown">
+                            <div class="demo-section-header">
+                                <i class="fas fa-chart-line"></i> Realistic Screening Scenarios
+                            </div>
+                            
+                            <div class="demo-option realistic" onclick="runDemo('general_population')">
+                                <div class="demo-option-icon"><i class="fas fa-users"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">General Population Screening</div>
+                                    <div class="demo-option-desc">0.5% prevalence • 2,000 samples • Population screening</div>
+                                    <div class="demo-option-stats">Realistic for general health screenings</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option realistic" onclick="runDemo('elderly_screening')">
+                                <div class="demo-option-icon"><i class="fas fa-user-clock"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Elderly Screening (65+)</div>
+                                    <div class="demo-option-desc">2% prevalence • 1,500 samples • Age-targeted screening</div>
+                                    <div class="demo-option-stats">Higher risk age group</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option realistic" onclick="runDemo('high_risk_screening')">
+                                <div class="demo-option-icon"><i class="fas fa-dna"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">High-Risk Screening</div>
+                                    <div class="demo-option-desc">5% prevalence • 1,000 samples • Family history</div>
+                                    <div class="demo-option-stats">Genetic predisposition or early symptoms</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option realistic" onclick="runDemo('symptom_based_screening')">
+                                <div class="demo-option-icon"><i class="fas fa-stethoscope"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Symptom-Based Screening</div>
+                                    <div class="demo-option-desc">15% prevalence • 800 samples • Referred patients</div>
+                                    <div class="demo-option-stats">Patients with motor symptoms</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option realistic" onclick="runDemo('small_balanced_sample')">
+                                <div class="demo-option-icon"><i class="fas fa-vial"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Small Balanced Sample</div>
+                                    <div class="demo-option-desc">3% prevalence • 100 samples • Quick testing</div>
+                                    <div class="demo-option-stats">Fast analysis for demonstration</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-section-divider"></div>
+                            <div class="demo-section-header warning">
+                                <i class="fas fa-exclamation-triangle"></i> Research Datasets (BIASED)
+                            </div>
+                            <div class="demo-bias-warning">
+                                ⚠️ These datasets have unrealistic 75% positive rates and are included for comparison only
+                            </div>
+                            
+                            <div class="demo-option biased" onclick="runDemo('early_stage')">
+                                <div class="demo-option-icon"><i class="fas fa-search-plus"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Early Stage (BIASED)</div>
+                                    <div class="demo-option-desc">~75% positive • Research cohort • Not realistic</div>
+                                    <div class="demo-option-stats">Clinical study population only</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option biased" onclick="runDemo('advanced_stage')">
+                                <div class="demo-option-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Advanced Stage (BIASED)</div>
+                                    <div class="demo-option-desc">~75% positive • Research cohort • Not realistic</div>
+                                    <div class="demo-option-stats">Clinical study population only</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option biased" onclick="runDemo('mixed_cohort')">
+                                <div class="demo-option-icon"><i class="fas fa-users"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Mixed Cohort (BIASED)</div>
+                                    <div class="demo-option-desc">~75% positive • Research cohort • Not realistic</div>
+                                    <div class="demo-option-stats">Clinical study population only</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option biased" onclick="runDemo('large_dataset')">
+                                <div class="demo-option-icon"><i class="fas fa-database"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Large Clinical (BIASED)</div>
+                                    <div class="demo-option-desc">75% positive • 128 samples • Research only</div>
+                                    <div class="demo-option-stats">Original study dataset</div>
+                                </div>
+                            </div>
+                            
+                            <div class="demo-option" onclick="runDemo('default')">
+                                <div class="demo-option-icon"><i class="fas fa-flask"></i></div>
+                                <div class="demo-option-text">
+                                    <div class="demo-option-title">Original 3-Sample Demo</div>
+                                    <div class="demo-option-desc">3 samples • Basic demonstration</div>
+                                    <div class="demo-option-stats">Minimal test case</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </header>
@@ -227,6 +340,418 @@
             </section>
         </main>
 
+        <!-- Educational Section -->
+        <section class="educational-section" id="educationalSection">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-code"></i>
+                        How Our AI Models Work
+                    </h2>
+                    <p class="section-subtitle">Explore the machine learning algorithms powering our Parkinson's detection system</p>
+                </div>
+
+                <!-- IDE-Style Interface -->
+                <div class="ide-container">
+                    <!-- File Tabs -->
+                    <div class="ide-tabs">
+                        <div class="ide-tab active" data-model="logistic" onclick="switchModel('logistic')">
+                            <i class="fas fa-file-code"></i>
+                            <span class="tab-name">LogisticRegression.py</span>
+                            <div class="tab-dot"></div>
+                        </div>
+                        <div class="ide-tab" data-model="random_forest" onclick="switchModel('random_forest')">
+                            <i class="fas fa-file-code"></i>
+                            <span class="tab-name">RandomForest.py</span>
+                            <div class="tab-dot"></div>
+                        </div>
+                        <div class="ide-tab" data-model="svm" onclick="switchModel('svm')">
+                            <i class="fas fa-file-code"></i>
+                            <span class="tab-name">SupportVectorMachine.py</span>
+                            <div class="tab-dot"></div>
+                        </div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="ide-content">
+                        <!-- Logistic Regression Content -->
+                        <div class="model-content active" id="logistic-content">
+                            <div class="content-header">
+                                <div class="file-path">
+                                    <i class="fas fa-folder"></i>
+                                    <span>/models/LogisticRegression.py</span>
+                                </div>
+                                <div class="content-meta">
+                                    <span class="accuracy">83.3% Accuracy</span>
+                                    <span class="model-type">Linear Model</span>
+                                </div>
+                            </div>
+
+                            <div class="explanation-section">
+                                <div class="explanation-brief">
+                                    <h4><i class="fas fa-lightbulb"></i> How it works (Simple)</h4>
+                                    <p>Logistic Regression is like a smart decision-making calculator. It looks at voice measurements and draws a line to separate healthy voices from those showing Parkinson's symptoms. Think of it as finding the best boundary line to distinguish between two groups of data points.</p>
+                                </div>
+
+                                <div class="explanation-technical">
+                                    <h4><i class="fas fa-cogs"></i> Technical Implementation</h4>
+                                    
+                                    <div class="code-section">
+                                        <h5>1. Algorithm Overview</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Logistic Regression uses the sigmoid function to map any input to (0,1)
+# P(y=1|x) = 1 / (1 + e^(-(β₀ + β₁x₁ + β₂x₂ + ... + βₙxₙ)))
+
+def logistic_regression_predict(features, weights, bias):
+    """
+    Predict Parkinson's probability using logistic regression
+    """
+    # Linear combination of features
+    linear_output = bias + sum(w * f for w, f in zip(weights, features))
+    
+    # Apply sigmoid function
+    probability = 1 / (1 + exp(-linear_output))
+    
+    # Classification threshold at 0.5
+    prediction = 1 if probability > 0.5 else 0
+    return prediction, probability</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="code-section">
+                                        <h5>2. Feature Preprocessing</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Standardize features for optimal logistic regression performance
+from sklearn.preprocessing import StandardScaler
+
+def preprocess_features(voice_data):
+    """
+    Normalize voice measurements for logistic regression
+    """
+    scaler = StandardScaler()
+    
+    # Key features: jitter, shimmer, fundamental frequency, etc.
+    features = voice_data[['MDVP:Jitter(%)', 'MDVP:Shimmer', 
+                          'NHR', 'HNR', 'RPDE', 'DFA', 'PPE']]
+    
+    # Standardize: mean=0, std=1
+    normalized_features = scaler.fit_transform(features)
+    
+    return normalized_features</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="code-section">
+                                        <h5>3. Model Training</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Scikit-learn implementation with cross-validation
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+
+def train_logistic_model(X_train, y_train):
+    """
+    Train logistic regression with optimal parameters
+    """
+    # Initialize with regularization to prevent overfitting
+    model = LogisticRegression(
+        C=1.0,              # Regularization strength
+        solver='liblinear',  # Optimization algorithm
+        random_state=42,
+        max_iter=1000
+    )
+    
+    # Train the model
+    model.fit(X_train, y_train)
+    
+    # Cross-validation for performance estimation
+    cv_scores = cross_val_score(model, X_train, y_train, 
+                               cv=5, scoring='accuracy')
+    
+    print(f"CV Accuracy: {cv_scores.mean():.4f} (+/- {cv_scores.std():.4f})")
+    
+    return model</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="performance-note">
+                                        <strong>Performance Characteristics:</strong>
+                                        <ul>
+                                            <li><strong>Speed:</strong> Very fast training and prediction</li>
+                                            <li><strong>Interpretability:</strong> Excellent - coefficients show feature importance</li>
+                                            <li><strong>Memory:</strong> Low memory footprint</li>
+                                            <li><strong>Best for:</strong> Linear relationships, baseline comparisons</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Random Forest Content -->
+                        <div class="model-content" id="random_forest-content">
+                            <div class="content-header">
+                                <div class="file-path">
+                                    <i class="fas fa-folder"></i>
+                                    <span>/models/RandomForest.py</span>
+                                </div>
+                                <div class="content-meta">
+                                    <span class="accuracy">91.7% Accuracy</span>
+                                    <span class="model-type">Ensemble Model</span>
+                                </div>
+                            </div>
+
+                            <div class="explanation-section">
+                                <div class="explanation-brief">
+                                    <h4><i class="fas fa-lightbulb"></i> How it works (Simple)</h4>
+                                    <p>Random Forest is like consulting a panel of expert doctors. It creates many decision trees (like different doctors' opinions) and combines their votes to make the final diagnosis. Each tree looks at different aspects of the voice data, making the overall decision more reliable and accurate.</p>
+                                </div>
+
+                                <div class="explanation-technical">
+                                    <h4><i class="fas fa-cogs"></i> Technical Implementation</h4>
+                                    
+                                    <div class="code-section">
+                                        <h5>1. Algorithm Overview</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Random Forest builds multiple decision trees with randomness
+def random_forest_predict(features, trees):
+    """
+    Ensemble prediction from multiple decision trees
+    """
+    predictions = []
+    
+    # Get prediction from each tree
+    for tree in trees:
+        tree_prediction = tree.predict(features)
+        predictions.append(tree_prediction)
+    
+    # Majority voting for final decision
+    positive_votes = sum(predictions)
+    total_votes = len(predictions)
+    
+    # Probability is the proportion of positive votes
+    probability = positive_votes / total_votes
+    final_prediction = 1 if probability > 0.5 else 0
+    
+    return final_prediction, probability</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="code-section">
+                                        <h5>2. Feature Selection & Importance</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Random Forest automatically ranks feature importance
+def analyze_feature_importance(model, feature_names):
+    """
+    Extract most important voice features for Parkinson's detection
+    """
+    # Get feature importances from trained model
+    importances = model.feature_importances_
+    
+    # Create importance ranking
+    feature_importance = list(zip(feature_names, importances))
+    feature_importance.sort(key=lambda x: x[1], reverse=True)
+    
+    # Top features for our Parkinson's detection
+    print("Most Important Voice Features:")
+    for feature, importance in feature_importance[:5]:
+        print(f"{feature}: {importance:.4f}")
+    
+    return feature_importance
+
+# Typical results show: PPE, spread1, MDVP:Fo(Hz) as top features</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="code-section">
+                                        <h5>3. Model Training</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Scikit-learn Random Forest with optimized parameters
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import GridSearchCV
+
+def train_random_forest(X_train, y_train):
+    """
+    Train Random Forest with hyperparameter tuning
+    """
+    # Base model configuration
+    rf = RandomForestClassifier(
+        n_estimators=100,    # Number of trees
+        max_depth=10,        # Maximum tree depth
+        min_samples_split=5, # Minimum samples to split
+        min_samples_leaf=2,  # Minimum samples per leaf
+        random_state=42,
+        n_jobs=-1           # Use all CPU cores
+    )
+    
+    # Optional: Hyperparameter tuning
+    param_grid = {
+        'n_estimators': [50, 100, 200],
+        'max_depth': [5, 10, None],
+        'min_samples_split': [2, 5, 10]
+    }
+    
+    # Grid search for best parameters
+    grid_search = GridSearchCV(rf, param_grid, cv=5, 
+                              scoring='accuracy', n_jobs=-1)
+    grid_search.fit(X_train, y_train)
+    
+    return grid_search.best_estimator_</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="performance-note">
+                                        <strong>Performance Characteristics:</strong>
+                                        <ul>
+                                            <li><strong>Accuracy:</strong> Highest among our models (91.7%)</li>
+                                            <li><strong>Robustness:</strong> Handles outliers and noise well</li>
+                                            <li><strong>Feature Selection:</strong> Built-in importance ranking</li>
+                                            <li><strong>Best for:</strong> Complex patterns, high accuracy requirements</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SVM Content -->
+                        <div class="model-content" id="svm-content">
+                            <div class="content-header">
+                                <div class="file-path">
+                                    <i class="fas fa-folder"></i>
+                                    <span>/models/SupportVectorMachine.py</span>
+                                </div>
+                                <div class="content-meta">
+                                    <span class="accuracy">87.2% Accuracy</span>
+                                    <span class="model-type">Kernel-based Model</span>
+                                </div>
+                            </div>
+
+                            <div class="explanation-section">
+                                <div class="explanation-brief">
+                                    <h4><i class="fas fa-lightbulb"></i> How it works (Simple)</h4>
+                                    <p>Support Vector Machine (SVM) is like finding the best fence between two neighborhoods. It draws the optimal boundary that separates healthy voices from Parkinson's voices with the maximum safety margin. It can even handle curved boundaries using mathematical tricks called kernels.</p>
+                                </div>
+
+                                <div class="explanation-technical">
+                                    <h4><i class="fas fa-cogs"></i> Technical Implementation</h4>
+                                    
+                                    <div class="code-section">
+                                        <h5>1. Algorithm Overview</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># SVM finds the optimal hyperplane with maximum margin
+def svm_decision_function(features, support_vectors, alphas, kernel='rbf'):
+    """
+    SVM decision function using kernel trick
+    """
+    decision_value = 0
+    
+    # Sum over all support vectors
+    for i, sv in enumerate(support_vectors):
+        # Apply kernel function (RBF in our case)
+        kernel_value = rbf_kernel(features, sv, gamma=0.1)
+        decision_value += alphas[i] * kernel_value
+    
+    # Add bias term
+    decision_value += bias
+    
+    # Convert to probability using Platt scaling
+    probability = 1 / (1 + exp(-decision_value))
+    prediction = 1 if decision_value > 0 else 0
+    
+    return prediction, probability
+
+def rbf_kernel(x1, x2, gamma):
+    """Radial Basis Function kernel"""
+    return exp(-gamma * np.sum((x1 - x2) ** 2))</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="code-section">
+                                        <h5>2. Feature Scaling (Critical for SVM)</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># SVM requires careful feature scaling for optimal performance
+from sklearn.preprocessing import StandardScaler
+
+def prepare_svm_features(voice_data):
+    """
+    Prepare features specifically for SVM classifier
+    """
+    # SVM is sensitive to feature scales - must normalize
+    scaler = StandardScaler()
+    
+    # Select voice features with high discriminative power
+    feature_columns = [
+        'MDVP:Jitter(%)', 'MDVP:Shimmer', 'NHR', 'HNR',
+        'RPDE', 'DFA', 'spread1', 'spread2', 'D2', 'PPE'
+    ]
+    
+    features = voice_data[feature_columns]
+    
+    # Critical: Scale to mean=0, std=1
+    scaled_features = scaler.fit_transform(features)
+    
+    print(f"Feature scaling completed: {scaled_features.shape}")
+    return scaled_features, scaler</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="code-section">
+                                        <h5>3. Model Training with RBF Kernel</h5>
+                                        <div class="code-block">
+<pre><code class="language-python"># Scikit-learn SVM with RBF kernel optimization
+from sklearn.svm import SVC
+from sklearn.model_selection import GridSearchCV
+
+def train_svm_model(X_train, y_train):
+    """
+    Train SVM with optimized hyperparameters
+    """
+    # SVM with RBF kernel for non-linear decision boundaries
+    svm = SVC(
+        kernel='rbf',           # Radial Basis Function kernel
+        C=1.0,                 # Regularization parameter
+        gamma='scale',         # Kernel coefficient
+        probability=True,      # Enable probability estimates
+        random_state=42
+    )
+    
+    # Hyperparameter tuning for optimal performance
+    param_grid = {
+        'C': [0.1, 1, 10, 100],         # Regularization strength
+        'gamma': ['scale', 'auto', 0.01, 0.1, 1]  # Kernel parameter
+    }
+    
+    # Grid search with cross-validation
+    grid_search = GridSearchCV(
+        svm, param_grid, cv=5, 
+        scoring='accuracy', n_jobs=-1
+    )
+    
+    # Train with best parameters
+    grid_search.fit(X_train, y_train)
+    
+    best_svm = grid_search.best_estimator_
+    print(f"Best parameters: {grid_search.best_params_}")
+    
+    return best_svm</code></pre>
+                                        </div>
+                                    </div>
+
+                                    <div class="performance-note">
+                                        <strong>Performance Characteristics:</strong>
+                                        <ul>
+                                            <li><strong>Boundary Complexity:</strong> Handles non-linear patterns excellently</li>
+                                            <li><strong>Precision:</strong> High precision with proper tuning</li>
+                                            <li><strong>Memory Efficiency:</strong> Only stores support vectors</li>
+                                            <li><strong>Best for:</strong> Complex decision boundaries, high-precision needs</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
@@ -239,8 +764,8 @@
                     <p>Machine Learning • FastAPI • Modern Web Technologies</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>For research and healthcare applications</p>
+                    <h4>Learn More</h4>
+                    <p><a href="/static/parkinsons-info.html" style="color: #667eea; text-decoration: none;">About Parkinson's Disease</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -304,6 +829,8 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
     <script src="/static/script.js"></script>
 </body>
 </html> 

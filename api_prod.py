@@ -366,7 +366,7 @@ async def analyze_data(file: UploadFile = File(...)):
         basic_info = {
             "shape": df.shape,
             "columns": list(df.columns),
-            "data_types": df.dtypes.to_dict(),
+            "data_types": {k: str(v) for k, v in df.dtypes.to_dict().items()},
             "missing_values": df.isnull().sum().to_dict()
         }
         
@@ -465,4 +465,4 @@ async def retrain_models(file: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(app, host="0.0.0.0", port=8888) 
