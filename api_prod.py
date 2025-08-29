@@ -7,7 +7,7 @@ Optimized for production deployment without visualization dependencies.
 """
 
 from fastapi import FastAPI, File, UploadFile, HTTPException
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from contextlib import asynccontextmanager
@@ -122,6 +122,12 @@ except Exception as e:
     print(f"Error mounting static files: {e}")
     print(f"Static directory contents: {os.listdir(static_dir) if os.path.exists(static_dir) else 'Directory does not exist'}")
 
+# Add a root redirect to handle Railway subdirectory deployments
+@app.get("/static/")
+async def static_root():
+    """Redirect to main page if accessing static root"""
+    return RedirectResponse(url="/")
+
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -196,7 +202,14 @@ async def static_test():
                 "css_file_size": len(css_content),
                 "css_first_line": css_content.split('\n')[0] if css_content else "No content",
                 "static_dir_path": os.path.abspath("static"),
-                "current_working_dir": os.getcwd()
+                "current_working_dir": os.getcwd(),
+                "request_url": "/static-test",
+                "static_files": {
+                    "css": os.path.exists("static/styles.css"),
+                    "js": os.path.exists("static/script.js"),
+                    "html": os.path.exists("static/index.html"),
+                    "parkinsons_info": os.path.exists("static/parkinsons-info.html")
+                }
             }
         else:
             return {
@@ -204,13 +217,15 @@ async def static_test():
                 "css_file_exists": False,
                 "static_dir_path": os.path.abspath("static") if os.path.exists("static") else "Not found",
                 "current_working_dir": os.getcwd(),
-                "available_files": os.listdir(".") if os.path.exists(".") else []
+                "available_files": os.listdir(".") if os.path.exists(".") else [],
+                "request_url": "/static-test"
             }
     except Exception as e:
         return {
             "status": "error",
             "error": str(e),
-            "current_working_dir": os.getcwd()
+            "current_working_dir": os.getcwd(),
+            "request_url": "/static-test"
         }
 
 @app.get("/test")
