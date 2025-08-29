@@ -180,6 +180,39 @@ async def ping():
     """Simple ping endpoint for basic health checks"""
     return {"status": "ok", "message": "pong", "timestamp": datetime.now().isoformat()}
 
+@app.get("/static-test")
+async def static_test():
+    """Test static file serving"""
+    import os
+    try:
+        # Test if we can read the CSS file
+        css_path = "static/styles.css"
+        if os.path.exists(css_path):
+            with open(css_path, 'r', encoding='utf-8') as f:
+                css_content = f.read()
+            return {
+                "status": "success",
+                "css_file_exists": True,
+                "css_file_size": len(css_content),
+                "css_first_line": css_content.split('\n')[0] if css_content else "No content",
+                "static_dir_path": os.path.abspath("static"),
+                "current_working_dir": os.getcwd()
+            }
+        else:
+            return {
+                "status": "error",
+                "css_file_exists": False,
+                "static_dir_path": os.path.abspath("static") if os.path.exists("static") else "Not found",
+                "current_working_dir": os.getcwd(),
+                "available_files": os.listdir(".") if os.path.exists(".") else []
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "error": str(e),
+            "current_working_dir": os.getcwd()
+        }
+
 @app.get("/test")
 async def test():
     """Test endpoint that doesn't require model loading"""
@@ -192,7 +225,17 @@ async def test():
         "working_directory": os.getcwd(),
         "static_dir_exists": os.path.exists("static"),
         "static_dir_contents": os.listdir("static") if os.path.exists("static") else [],
-        "all_files": os.listdir(".")
+        "all_files": os.listdir("."),
+        "static_files_accessible": {
+            "css": os.path.exists("static/styles.css"),
+            "js": os.path.exists("static/script.js"),
+            "html": os.path.exists("static/index.html")
+        },
+        "static_file_sizes": {
+            "css": os.path.getsize("static/styles.css") if os.path.exists("static/styles.css") else 0,
+            "js": os.path.getsize("static/script.js") if os.path.exists("static/script.js") else 0,
+            "html": os.path.getsize("static/index.html") if os.path.exists("static/index.html") else 0
+        }
     }
 
 @app.get("/health")
